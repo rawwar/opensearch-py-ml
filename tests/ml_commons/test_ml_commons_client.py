@@ -208,11 +208,12 @@ def test_DEPRECATED_integration_pretrained_model_upload_unload_delete():
         )
         ml_model_status = ml_client.get_model_info(model_id)
         assert ml_model_status.get("model_state") != "DEPLOY_FAILED"
-    except:  # noqa: E722
+    except Exception as ex:  # noqa: E722
         raised = True
+        exception_message = str(ex)
     assert (
         raised == False
-    ), "Raised Exception during pretrained model registration and deployment"
+    ), f"Raised Exception during pretrained model registration and deployment. Exception: {exception_message}"
 
     if model_id:
         raised = False
@@ -220,26 +221,29 @@ def test_DEPRECATED_integration_pretrained_model_upload_unload_delete():
             ml_model_status = ml_client.get_model_info(model_id)
             assert ml_model_status.get("model_format") == "TORCH_SCRIPT"
             assert ml_model_status.get("algorithm") == "TEXT_EMBEDDING"
-        except:  # noqa: E722
+        except Exception as ex:  # noqa: E722
+            exception_message = str(ex)
             raised = True
-        assert raised == False, "Raised Exception in getting pretrained model info"
+        assert raised == False, "Raised Exception in getting pretrained model info. Exception: {exception_message}"
 
         raised = False
         try:
             ml_client.unload_model(model_id)
             ml_model_status = ml_client.get_model_info(model_id)
             assert ml_model_status.get("model_state") != "UNDEPLOY_FAILED"
-        except:  # noqa: E722
+        except Exception as ex:  # noqa: E722
+            exception_message = str(ex)            
             raised = True
-        assert raised == False, "Raised Exception in pretrained model undeployment"
+        assert raised == False, "Raised Exception in pretrained model undeployment. Exception: {exception_message}"
 
         raised = False
         try:
             delete_model_obj = ml_client.delete_model(model_id)
             assert delete_model_obj.get("result") == "deleted"
-        except:  # noqa: E722
+        except Exception as ex:  # noqa: E722
+            exception_message = str(ex)
             raised = True
-        assert raised == False, "Raised Exception in deleting pretrained model"
+        assert raised == False, "Raised Exception in deleting pretrained model. Exception: {exception_message}"
 
 
 def test_integration_pretrained_model_register_undeploy_delete():
