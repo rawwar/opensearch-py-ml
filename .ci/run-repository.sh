@@ -48,10 +48,11 @@ if [[ "$TASK_TYPE" == "test" ]]; then
   nox -s "test-${PYTHON_VERSION}(pandas_version='${PANDAS_VERSION}')"
 
   # Get and print the logs for the "instance" container
+  echo "!@# Container logs here"
   container_name="instance"
-  logs=$(docker logs $container_name)
+  docker logs $container_name > "$log_file"
   echo -e "\033[1m>>>>> Container Logs for $container_name >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
-  echo "$logs"
+  cat "$logs"
   
   docker cp opensearch-py-ml-test-runner:/code/opensearch-py-ml/junit/ ./junit/
   docker rm opensearch-py-ml-test-runner
