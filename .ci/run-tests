@@ -33,8 +33,3 @@ DETACH=true bash $script_path/run-opensearch.sh
 echo -e "\033[1m>>>>> Repository specific tests >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
 bash $script_path/run-repository.sh
 
-# Get and print the logs for the "instance" container
-container_name="instance"
-logs=$(docker logs $container_name)
-echo -e "\033[1m>>>>> Container Logs for $container_name >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
-echo "$logs"
