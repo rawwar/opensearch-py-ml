@@ -316,7 +316,7 @@ class MLCommonClient:
                 print("Model deployed only partially")
             # TODO: need to add the test case later for this line
             else:
-                raise Exception("Model deployment failed")
+                raise Exception("Model deployment failed. Model state: " + str(model_state))
 
         return self._get_task_info(task_id)
 
