@@ -280,7 +280,9 @@ def test_integration_pretrained_model_register_undeploy_delete():
         except Exception as ex:  # noqa: E722
             raised = True
             exception_message = str(ex)
-        assert raised == False, "Raised Exception in getting pretrained model info. Exception: {exception_message}"
+        assert (
+            raised == False
+        ), "Raised Exception in getting pretrained model info. Exception: {exception_message}"
 
         raised = False
         try:
@@ -290,7 +292,9 @@ def test_integration_pretrained_model_register_undeploy_delete():
         except Exception as ex:  # noqa: E722
             raised = True
             exception_message = str(ex)
-        assert raised == False, "Raised Exception in pretrained model undeployment. Exception: {exception_message}"
+        assert (
+            raised == False
+        ), "Raised Exception in pretrained model undeployment. Exception: {exception_message}"
 
         raised = False
         try:
@@ -299,7 +303,9 @@ def test_integration_pretrained_model_register_undeploy_delete():
         except Exception as ex:  # noqa: E722
             raised = True
             exception_message = str(ex)
-        assert raised == False, "Raised Exception in deleting pretrained model. Exception: {exception_message}"
+        assert (
+            raised == False
+        ), "Raised Exception in deleting pretrained model. Exception: {exception_message}"
 
 
 def test_DEPRECATED_integration_model_train_upload_full_cycle():
@@ -437,7 +443,9 @@ def test_integration_model_train_register_full_cycle():
         except Exception as ex:  # noqa: E722
             raised = True
             exception_message = str(ex)
-        assert raised == False, f"Raised Exception during first model registration. Exception: {exception_message}"
+        assert (
+            raised == False
+        ), f"Raised Exception during first model registration. Exception: {exception_message}"
 
         raised = False
         try:
@@ -451,7 +459,9 @@ def test_integration_model_train_register_full_cycle():
         except Exception as ex:  # noqa: E722
             raised = True
             exception_message = str(ex)
-        assert raised == False, f"Raised Exception during second model registration. Exception: {exception_message}"
+        assert (
+            raised == False
+        ), f"Raised Exception during second model registration. Exception: {exception_message}"
 
         if model_id:
             raised = False
@@ -467,7 +477,9 @@ def test_integration_model_train_register_full_cycle():
             except Exception as ex:  # noqa: E722
                 raised = True
                 exception_message = str(ex)
-            assert raised == False, f"Raised Exception in model deployment. Exception: {exception_message}"
+            assert (
+                raised == False
+            ), f"Raised Exception in model deployment. Exception: {exception_message}"
 
             raised = False
             try:
@@ -477,7 +489,9 @@ def test_integration_model_train_register_full_cycle():
             except Exception as ex:  # noqa: E722
                 raised = True
                 exception_message = str(ex)
-            assert raised == False, f"Raised Exception in getting model info. Exception: {exception_message}"
+            assert (
+                raised == False
+            ), f"Raised Exception in getting model info. Exception: {exception_message}"
 
             if task_id:
                 raised = False
@@ -493,7 +507,9 @@ def test_integration_model_train_register_full_cycle():
                     print("Model Task Status:", ml_task_status)
                     raised = True
                     exception_message = str(ex)
-                assert raised == False, f"Raised Exception in pulling task info. Exception: {exception_message}"
+                assert (
+                    raised == False
+                ), f"Raised Exception in pulling task info. Exception: {exception_message}"
 
                 # This is test is being flaky. Sometimes the test is passing and sometimes showing 500 error
                 # due to memory circuit breaker.
@@ -509,7 +525,7 @@ def test_integration_model_train_register_full_cycle():
                     exception_message = str(ex)
                 assert (
                     raised == False
-                ),f"Raised Exception in generating sentence embedding. Exception: {exception_message}"
+                ), f"Raised Exception in generating sentence embedding. Exception: {exception_message}"
 
                 try:
                     delete_task_obj = ml_client.delete_task(task_id)
@@ -517,16 +533,20 @@ def test_integration_model_train_register_full_cycle():
                 except Exception as ex:  # noqa: E722
                     raised = True
                     exception_message = str(ex)
-                assert raised == False, f"Raised Exception in deleting task. Exception: {exception_message}"
+                assert (
+                    raised == False
+                ), f"Raised Exception in deleting task. Exception: {exception_message}"
 
                 try:
                     ml_client.undeploy_model(model_id)
                     ml_model_status = ml_client.get_model_info(model_id)
                     assert ml_model_status.get("model_state") != "UNDEPLOY_FAILED"
                 except Exception as ex:  # noqa: E722
-                    raised = 
+                    raised = True
                     exception_message = str(ex)
-                assert raised == False, f"Raised Exception in model undeployment. Exception: {exception_message}"
+                assert (
+                    raised == False
+                ), f"Raised Exception in model undeployment. Exception: {exception_message}"
 
                 raised = False
                 try:
@@ -535,7 +555,9 @@ def test_integration_model_train_register_full_cycle():
                 except Exception as ex:  # noqa: E722
                     raised = True
                     exception_message = str(ex)
-                assert raised == False, f"Raised Exception in deleting model. Exception: {exception_message}"
+                assert (
+                    raised == False
+                ), f"Raised Exception in deleting model. Exception: {exception_message}"
 
 
 test_integration_model_train_register_full_cycle()
