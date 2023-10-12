@@ -14,6 +14,7 @@ cleanup_node $opensearch_node_name
 
 master_node_name=${opensearch_node_name}
 cluster_name=os-py-ml-test
+log_file="/tmp/opensearch_logs.txt"
 
 declare -a volumes
 environment=($(cat <<-END
@@ -100,7 +101,8 @@ END
       --health-timeout=2s \
       --rm \
       -d \
-      $CLUSTER_TAG;
+      $CLUSTER_TAG \
+      2>&1 | tee "$log_file";
 
   set +x
   if wait_for_container "$opensearch_node_name" "$network_name"; then
