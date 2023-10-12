@@ -30,12 +30,11 @@ set -euo pipefail
 echo -e "\033[1m>>>>> Start server container >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
 DETACH=true bash $script_path/run-opensearch.sh
 
-docker image ls
-docker container ls
-# echo -e "\033[1m>>>>> Repository specific tests >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
-# bash $script_path/run-repository.sh
+echo -e "\033[1m>>>>> Repository specific tests >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
+bash $script_path/run-repository.sh
 
-# Print the log file from the run-opensearch.sh script
-echo -e "\033[34;1mINFO:\033[0m Printing Elasticsearch logs \033[0m"
-log_file="/tmp/opensearch_logs.txt"
-cat "$log_file"
+# Get and print the logs for the "instance" container
+container_name="instance"
+logs=$(docker logs $container_name)
+echo -e "\033[1m>>>>> Container Logs for $container_name >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
+echo "$logs"
