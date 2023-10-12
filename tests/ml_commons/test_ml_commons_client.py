@@ -264,11 +264,12 @@ def test_integration_pretrained_model_register_undeploy_delete():
         )
         ml_model_status = ml_client.get_model_info(model_id)
         assert ml_model_status.get("model_state") != "DEPLOY_FAILED"
-    except:  # noqa: E722
+    except Exception as ex:  # noqa: E722
         raised = True
+        exception_message = str(ex)
     assert (
         raised == False
-    ), "Raised Exception during pretrained model registration and deployment"
+    ), f"Raised Exception during pretrained model registration and deployment. Exception: {exception_message}"
 
     if model_id:
         raised = False
@@ -276,26 +277,29 @@ def test_integration_pretrained_model_register_undeploy_delete():
             ml_model_status = ml_client.get_model_info(model_id)
             assert ml_model_status.get("model_format") == "TORCH_SCRIPT"
             assert ml_model_status.get("algorithm") == "TEXT_EMBEDDING"
-        except:  # noqa: E722
+        except Exception as ex:  # noqa: E722
             raised = True
-        assert raised == False, "Raised Exception in getting pretrained model info"
+            exception_message = str(ex)
+        assert raised == False, "Raised Exception in getting pretrained model info. Exception: {exception_message}"
 
         raised = False
         try:
             ml_client.undeploy_model(model_id)
             ml_model_status = ml_client.get_model_info(model_id)
             assert ml_model_status.get("model_state") != "UNDEPLOY_FAILED"
-        except:  # noqa: E722
+        except Exception as ex:  # noqa: E722
             raised = True
-        assert raised == False, "Raised Exception in pretrained model undeployment"
+            exception_message = str(ex)
+        assert raised == False, "Raised Exception in pretrained model undeployment. Exception: {exception_message}"
 
         raised = False
         try:
             delete_model_obj = ml_client.delete_model(model_id)
             assert delete_model_obj.get("result") == "deleted"
-        except:  # noqa: E722
+        except Exception as ex:  # noqa: E722
             raised = True
-        assert raised == False, "Raised Exception in deleting pretrained model"
+            exception_message = str(ex)
+        assert raised == False, "Raised Exception in deleting pretrained model. Exception: {exception_message}"
 
 
 def test_DEPRECATED_integration_model_train_upload_full_cycle():
@@ -430,9 +434,10 @@ def test_integration_model_train_register_full_cycle():
                 deploy_model=True,
                 isVerbose=True,
             )
-        except:  # noqa: E722
+        except Exception as ex:  # noqa: E722
             raised = True
-        assert raised == False, "Raised Exception during first model registration"
+            exception_message = str(ex)
+        assert raised == False, f"Raised Exception during first model registration. Exception: {exception_message}"
 
         raised = False
         try:
@@ -443,9 +448,10 @@ def test_integration_model_train_register_full_cycle():
                 isVerbose=True,
             )
             print("Model_id:", model_id)
-        except:  # noqa: E722
+        except Exception as ex:  # noqa: E722
             raised = True
-        assert raised == False, "Raised Exception during second model registration"
+            exception_message = str(ex)
+        assert raised == False, f"Raised Exception during second model registration. Exception: {exception_message}"
 
         if model_id:
             raised = False
@@ -458,18 +464,20 @@ def test_integration_model_train_register_full_cycle():
 
                 ml_model_status = ml_client.get_model_info(model_id)
                 assert ml_model_status.get("model_state") != "DEPLOY_FAILED"
-            except:  # noqa: E722
+            except Exception as ex:  # noqa: E722
                 raised = True
-            assert raised == False, "Raised Exception in model deployment"
+                exception_message = str(ex)
+            assert raised == False, f"Raised Exception in model deployment. Exception: {exception_message}"
 
             raised = False
             try:
                 ml_model_status = ml_client.get_model_info(model_id)
                 assert ml_model_status.get("model_format") == "TORCH_SCRIPT"
                 assert ml_model_status.get("algorithm") == "TEXT_EMBEDDING"
-            except:  # noqa: E722
+            except Exception as ex:  # noqa: E722
                 raised = True
-            assert raised == False, "Raised Exception in getting model info"
+                exception_message = str(ex)
+            assert raised == False, f"Raised Exception in getting model info. Exception: {exception_message}"
 
             if task_id:
                 raised = False
@@ -481,10 +489,11 @@ def test_integration_model_train_register_full_cycle():
                     assert ml_task_status.get("task_type") == "DEPLOY_MODEL"
                     print("State:", ml_task_status.get("state"))
                     assert ml_task_status.get("state") != "FAILED"
-                except:  # noqa: E722
+                except Exception as ex:  # noqa: E722
                     print("Model Task Status:", ml_task_status)
                     raised = True
-                assert raised == False, "Raised Exception in pulling task info"
+                    exception_message = str(ex)
+                assert raised == False, f"Raised Exception in pulling task info. Exception: {exception_message}"
 
                 # This is test is being flaky. Sometimes the test is passing and sometimes showing 500 error
                 # due to memory circuit breaker.
@@ -495,34 +504,38 @@ def test_integration_model_train_register_full_cycle():
                     embedding_result = ml_client.generate_embedding(model_id, sentences)
                     print(embedding_result)
                     assert len(embedding_result.get("inference_results")) == 2
-                except:  # noqa: E722
+                except Exception as ex:  # noqa: E722
                     raised = True
+                    exception_message = str(ex)
                 assert (
                     raised == False
-                ), "Raised Exception in generating sentence embedding"
+                ),f"Raised Exception in generating sentence embedding. Exception: {exception_message}"
 
                 try:
                     delete_task_obj = ml_client.delete_task(task_id)
                     assert delete_task_obj.get("result") == "deleted"
-                except:  # noqa: E722
+                except Exception as ex:  # noqa: E722
                     raised = True
-                assert raised == False, "Raised Exception in deleting task"
+                    exception_message = str(ex)
+                assert raised == False, f"Raised Exception in deleting task. Exception: {exception_message}"
 
                 try:
                     ml_client.undeploy_model(model_id)
                     ml_model_status = ml_client.get_model_info(model_id)
                     assert ml_model_status.get("model_state") != "UNDEPLOY_FAILED"
-                except:  # noqa: E722
-                    raised = True
-                assert raised == False, "Raised Exception in model undeployment"
+                except Exception as ex:  # noqa: E722
+                    raised = 
+                    exception_message = str(ex)
+                assert raised == False, f"Raised Exception in model undeployment. Exception: {exception_message}"
 
                 raised = False
                 try:
                     delete_model_obj = ml_client.delete_model(model_id)
                     assert delete_model_obj.get("result") == "deleted"
-                except:  # noqa: E722
+                except Exception as ex:  # noqa: E722
                     raised = True
-                assert raised == False, "Raised Exception in deleting model"
+                    exception_message = str(ex)
+                assert raised == False, f"Raised Exception in deleting model. Exception: {exception_message}"
 
 
 test_integration_model_train_register_full_cycle()
