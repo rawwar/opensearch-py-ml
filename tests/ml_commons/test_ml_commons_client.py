@@ -224,7 +224,9 @@ def test_DEPRECATED_integration_pretrained_model_upload_unload_delete():
         except Exception as ex:  # noqa: E722
             exception_message = str(ex)
             raised = True
-        assert raised == False, f"Raised Exception in getting pretrained model info. Exception: {exception_message}"
+        assert (
+            raised == False
+        ), f"Raised Exception in getting pretrained model info. Exception: {exception_message}"
 
         raised = False
         try:
@@ -232,9 +234,11 @@ def test_DEPRECATED_integration_pretrained_model_upload_unload_delete():
             ml_model_status = ml_client.get_model_info(model_id)
             assert ml_model_status.get("model_state") != "UNDEPLOY_FAILED"
         except Exception as ex:  # noqa: E722
-            exception_message = str(ex)  
+            exception_message = str(ex)
             raised = True
-        assert raised == False, "Raised Exception in pretrained model undeployment. Exception: {exception_message}"
+        assert (
+            raised == False
+        ), "Raised Exception in pretrained model undeployment. Exception: {exception_message}"
 
         raised = False
         try:
@@ -243,7 +247,9 @@ def test_DEPRECATED_integration_pretrained_model_upload_unload_delete():
         except Exception as ex:  # noqa: E722
             exception_message = str(ex)
             raised = True
-        assert raised == False, f"Raised Exception in deleting pretrained model. Exception: {exception_message}"
+        assert (
+            raised == False
+        ), f"Raised Exception in deleting pretrained model. Exception: {exception_message}"
 
 
 def test_integration_pretrained_model_register_undeploy_delete():
